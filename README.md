@@ -1,26 +1,7 @@
 # info
 
 ## SETUP
-
-Api utiliza postgres como Data Base
-
-docker compose para iniciar o Postgres:
-
-```
-version: '3'
-services:
-  dbPostgres:
-    image: postgres
-    restart: always
-    ports:
-        - 5432:5432
-    environment:
-        POSTGRES_USER: root
-        POSTGRES_PASSWORD: changeme
-        POSTGRES_DB: mydb
-```
-
-### criar db de test:e2e. Nome: e2etest
+Api utiliza um arquivo como Data Base
 
 ## CRUD Endpoints
 

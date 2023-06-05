@@ -9,65 +9,92 @@ export class CarController {
     this.carService = carService;
   }
 
-  public async createCar(request: Request): Promise<Response> {
-    console.time("CarController createCar ==================");
-    const { queryParameters, pathParameters, body } = request;
+  private errorHandler(error: Error) {
+    console.log(error);
 
-    const { placa, chassi, renavam, modelo, marca, ano } = body;
-    const newCarInput = {
-      placa,
-      chassi,
-      renavam,
-      modelo,
-      marca,
-      ano,
-    };
+    if (error instanceof ValidationServiceError) {
+      const response = new Response(
+        400,
+        {
+          message: error.message,
+        },
+      );
 
-    const response: Response = {
-      statusCode: 200,
-      body: await this.carService.createCar(newCarInput),
-    };
+      return response;
+    }
+    const response = new Response(
+      500,
+      {
+        message: "internal server error",
+      },
+    );
 
-    console.timeEnd("CarController createCar ==================");
     return response;
+  }
+
+  public async createCar(request: Request): Promise<Response> {
+    try {
+      console.time("CarController createCar ==================");
+      const { queryParameters, pathParameters, body } = request;
+
+      const { placa, chassi, renavam, modelo, marca, ano } = body;
+      const newCarInput = {
+        placa,
+        chassi,
+        renavam,
+        modelo,
+        marca,
+        ano,
+      };
+
+      const response = new Response(
+        200,
+        await this.carService.createCar(newCarInput),
+      );
+
+      console.timeEnd("CarController createCar ==================");
+      return response;
+    } catch (error) {
+      return this.errorHandler(error);
+    }
   }
 
   public async getCarById(request: Request): Promise<Response> {
-    console.time("CarController getCarById ==================");
-    const { queryParameters, pathParameters, body } = request;
+    try {
+      console.time("CarController getCarById ==================");
+      const { queryParameters, pathParameters, body } = request;
 
-    const { carId } = pathParameters;
+      const { carId } = pathParameters;
 
-    if (!carId) {
-      const response: Response = {
-        statusCode: 400,
-        body: { message: "invalid input" },
-      };
+      const getCarByIdInput = carId;
+
+      const response = new Response(
+        200,
+        await this.carService.getCarById(getCarByIdInput),
+      );
+
+      console.timeEnd("CarController getCarById ==================");
       return response;
+    } catch (error) {
+      return this.errorHandler(error);
     }
-
-    const getCarByIdInput = carId;
-
-    const response: Response = {
-      statusCode: 200,
-      body: await this.carService.getCarById(getCarByIdInput),
-    };
-
-    console.timeEnd("CarController getCarById ==================");
-    return response;
   }
 
   public async listAllCars(request: Request): Promise<Response> {
-    console.time("CarController listAllCars ==================");
-    const { queryParameters, pathParameters, body } = request;
+    try {
+      console.time("CarController listAllCars ==================");
+      const { queryParameters, pathParameters, body } = request;
 
-    const response: Response = {
-      statusCode: 200,
-      body: await this.carService.getAllCars(),
-    };
+      const response = new Response(
+        200,
+        await this.carService.getAllCars(),
+      );
 
-    console.timeEnd("CarController listAllCars ==================");
-    return response;
+      console.timeEnd("CarController listAllCars ==================");
+      return response;
+    } catch (error) {
+      return this.errorHandler(error);
+    }
   }
 
   public async updateCar(request: Request): Promise<Response> {
@@ -76,13 +103,6 @@ export class CarController {
       const { queryParameters, pathParameters, body } = request;
 
       const { carId } = pathParameters;
-      if (!carId) {
-        const response: Response = {
-          statusCode: 400,
-          body: { message: "invalid input" },
-        };
-        return response;
-      }
 
       const { placa, chassi, renavam, modelo, marca, ano } = body;
       const fieldsToUpdate = {
@@ -104,39 +124,34 @@ export class CarController {
         {},
       );
 
-      const response: Response = {
-        statusCode: 200,
-        body: await this.carService.updateCar(carId, updateCarDataInput),
-      };
+      const response = new Response(
+        200,
+        await this.carService.updateCar(carId, updateCarDataInput),
+      );
 
       console.timeEnd("CarController updateCar ==================");
       return response;
     } catch (error) {
-      if (error instanceof ValidationServiceError) {
-        const response: Response = {
-          statusCode: 400,
-          body: {
-            message: error.message
-          },
-        };
-
-        return response
-      }
+      return this.errorHandler(error);
     }
   }
 
   public async deleteCar(request: Request): Promise<Response> {
-    console.time("CarController deleteCar ==================");
-    const { queryParameters, pathParameters, body } = request;
+    try {
+      console.time("CarController deleteCar ==================");
+      const { queryParameters, pathParameters, body } = request;
 
-    const { carId } = pathParameters;
+      const { carId } = pathParameters;
 
-    const response: Response = {
-      statusCode: 200,
-      body: await this.carService.deleteCarById(carId),
-    };
+      const response = new Response(
+        200,
+        await this.carService.deleteCarById(carId),
+      );
 
-    console.timeEnd("CarController deleteCar ==================");
-    return response;
+      console.timeEnd("CarController deleteCar ==================");
+      return response;
+    } catch (error) {
+      return this.errorHandler(error);
+    }
   }
 }

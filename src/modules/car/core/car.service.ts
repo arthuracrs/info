@@ -3,6 +3,7 @@ import { v4 as uuid } from "uuid";
 import { ICarRepository } from "./carRepository.port";
 import { Car } from "./car.model";
 import { IInputValidationService } from "./inputValidationService.port";
+import { CarNotFoundError } from "./car.errors";
 
 interface ICreateCarInput {
   placa: string;
@@ -26,9 +27,7 @@ export class CarService {
   }
 
   public async createCar(carInput: ICreateCarInput) {
-    if (!this.inputValidationService.createCarInputIsValid(carInput)) {
-      throw new Error();
-    }
+    this.inputValidationService.createCarInputIsValid(carInput);
 
     const newCar = new Car(carInput);
 
@@ -41,10 +40,12 @@ export class CarService {
   }
 
   public async getCarById(carId: string) {
-    if (!this.inputValidationService.getCarByIdInputIsValid(carId)) {
-      throw new Error();
-    }
+    this.inputValidationService.getCarByIdInputIsValid(carId);
+
     const carFromRepository = await this.carRepository.findById(carId);
+    if (!carFromRepository) {
+      return null;
+    }
     const car = new Car(carFromRepository);
 
     return car;
@@ -62,7 +63,7 @@ export class CarService {
 
   public async updateCar(carId: string, updateData: Partial<Car>) {
     this.inputValidationService.updateInputIsValid(carId, updateData);
-    
+
     const carFromReposittory = await this.carRepository.update(
       carId,
       updateData,
@@ -73,9 +74,8 @@ export class CarService {
   }
 
   public async deleteCarById(carId: string): Promise<string> {
-    if (!this.inputValidationService.deleteCarByIdInputIsValid(carId)) {
-      throw new Error();
-    }
+    this.inputValidationService.deleteCarByIdInputIsValid(carId);
+
     await this.carRepository.delete(carId);
 
     return "deleted";

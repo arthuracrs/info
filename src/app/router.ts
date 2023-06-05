@@ -2,50 +2,55 @@ import express from "express";
 // import cors from 'cors'
 
 import { expressControllerAdapter } from "./expressControllerAdapter";
-import { carController } from "../modules/car/index";
 
-const router = express.Router();
+export class AppRouter {
+  private carController;
+  public router;
 
-router.get(
-  "/health",
-  (req, res) => {
-    return res.send("alive");
-  },
-);
+  constructor(carModule) {
+    this.carController = carModule.carController;
+    this.router = express.Router();
 
-router.post(
-  "/car",
-  expressControllerAdapter((request) => {
-    return carController.createCar(request);
-  }),
-);
+    this.router.get(
+      "/health",
+      (req, res) => {
+        return res.send("alive");
+      },
+    );
 
-router.get(
-  "/car",
-  expressControllerAdapter((request) => {
-    return carController.listAllCars(request);
-  }),
-);
+    this.router.post(
+      "/car",
+      expressControllerAdapter((request) => {
+        return this.carController.createCar(request);
+      }),
+    );
 
-router.get(
-  "/car/:carId",
-  expressControllerAdapter((request) => {
-    return carController.getCarById(request);
-  }),
-);
+    this.router.get(
+      "/car",
+      expressControllerAdapter((request) => {
+        return this.carController.listAllCars(request);
+      }),
+    );
 
-router.patch(
-  "/car/:carId",
-  expressControllerAdapter((request) => {
-    return carController.updateCar(request);
-  }),
-);
+    this.router.get(
+      "/car/:carId",
+      expressControllerAdapter((request) => {
+        return this.carController.getCarById(request);
+      }),
+    );
 
-router.delete(
-  "/car/:carId",
-  expressControllerAdapter((request) => {
-    return carController.deleteCar(request);
-  }),
-);
+    this.router.patch(
+      "/car/:carId",
+      expressControllerAdapter((request) => {
+        return this.carController.updateCar(request);
+      }),
+    );
 
-export default router;
+    this.router.delete(
+      "/car/:carId",
+      expressControllerAdapter((request) => {
+        return this.carController.deleteCar(request);
+      }),
+    );
+  }
+}

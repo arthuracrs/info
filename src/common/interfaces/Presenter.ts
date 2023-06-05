@@ -4,9 +4,14 @@ export interface Request {
   body: any;
 }
 
-export interface Response {
+export class Response {
   statusCode: number;
   body: any;
+
+  constructor(statusCode: number, body: any) {
+    this.statusCode = statusCode;
+    this.body = body;
+  }
 }
 
 export interface handler {

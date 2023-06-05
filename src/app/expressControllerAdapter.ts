@@ -13,7 +13,7 @@ export const expressControllerAdapter = (controllerFn: handler) => {
 
       const result = await controllerFn(controllerFnReq);
 
-      res.status(result.statusCode).json(result.body);
+      res.status(result?.statusCode).json(result?.body);
     } catch (error) {
       next(error);
     }

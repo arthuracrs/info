@@ -5,7 +5,7 @@ import sinon from "sinon";
 import { Car } from "../../../../src/modules/car/core/car.model";
 import { CarService } from "../../../../src/modules/car/core/car.service";
 import { InputValidationServiceJoi } from "../../../../src/modules/car/adapters/inputValidationServiceJoi";
-import { CarPostgresRepository } from "../../../../src/modules/car/adapters/repository/carSequelize.repository";
+import { CarPostgresRepository } from "../../../../src/modules/car/adapters/carSequelize.repository";
 import { CarFromDbDto } from "../../../../src/modules/car/core/dto/carFromDbDto";
 import { ValidationServiceError } from "../../../../src/modules/car/core/car.errors";
 
@@ -104,7 +104,7 @@ describe("CarService", () => {
       const result = await carService.getCarById(carId);
 
       assert.instanceOf(result, Car);
-      assert.equal(result.carId, carId);
+      assert.equal(result?.carId, carId);
     });
 
     it("should throw an error when input is invalid", async () => {

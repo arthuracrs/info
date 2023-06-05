@@ -2,6 +2,7 @@ import { assert, expect } from "chai";
 import axios from "axios";
 
 import { bootstrap } from "./main";
+import { Server } from "http";
 
 const BASE_URL = "http://localhost:3000";
 
@@ -21,7 +22,7 @@ const createCar = async () => {
 };
 
 describe("API CRUD test", () => {
-  let server;
+  let server: Server;
 
   before(async () => {
     console.clear();

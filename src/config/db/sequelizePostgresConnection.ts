@@ -1,8 +1,8 @@
 import { Sequelize } from "sequelize";
 import { IDbConnectionSingleton } from "./IDbConnection";
 
-export class SequelizeConnection implements IDbConnectionSingleton {
-  private static instance: SequelizeConnection;
+export class SequelizePostgresConnection implements IDbConnectionSingleton {
+  private static instance: SequelizePostgresConnection;
   private sequelize: Sequelize;
 
   constructor() {
@@ -18,11 +18,11 @@ export class SequelizeConnection implements IDbConnectionSingleton {
     );
   }
 
-  public static getInstance(): SequelizeConnection {
-    if (!SequelizeConnection.instance) {
-      SequelizeConnection.instance = new SequelizeConnection();
+  public static getInstance(): SequelizePostgresConnection {
+    if (!SequelizePostgresConnection.instance) {
+      SequelizePostgresConnection.instance = new SequelizePostgresConnection();
     }
-    return SequelizeConnection.instance;
+    return SequelizePostgresConnection.instance;
   }
 
   public getSequelize(): Sequelize {

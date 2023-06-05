@@ -1,15 +1,14 @@
 import express from "express";
 
-import router from "./router.js";
+export class AppModule {
+  private router: express.IRouter;
+  public app: express.Express;
 
-const app = express();
+  constructor(appRouter) {
+    this.router = appRouter.router;
+    this.app = express();
 
-app.use(express.json());
-app.use(router);
-// app.use(cors())
-
-app.use((error, req, res, next) => {
-  res.status(500).send("Internal Server Error");
-});
-
-export default app;
+    this.app.use(express.json());
+    this.app.use(this.router);
+  }
+}
