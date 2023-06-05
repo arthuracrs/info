@@ -1,0 +1,6 @@
+{
+    "exec": "npm run start",
+    "watch": ["src"],
+    "ext": ".ts"
+  }
+  
