@@ -1,0 +1,229 @@
+openapi: 3.0.3
+info:
+  title: Swagger Car
+  description: |-
+    This is a Car API Server based on the OpenAPI 3.0 specification.  
+    
+    Some useful links:
+    - [The Car Api repository](https://github.com/arthuracrs/info)
+
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: https://meuloru.com/
+tags:
+  - name: car
+    description: Everything about your cars
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+paths:
+  /car:
+    post:
+      tags:
+        - car
+      summary: Add a new car
+      description: Add a new car
+      operationId: addCar
+      requestBody:
+        description: Create a new car
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Car'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Car'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Car'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedCar'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CreatedCar'
+        '400':
+          description: Invalid input
+    get:
+      tags:
+        - car
+      summary: List all cars
+      description: List all cars
+      operationId: listCars
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarArray'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CarArray'
+  /car/{carId}:
+    get:
+      tags:
+        - car
+      summary: Find car by ID
+      description: Returns a single car
+      operationId: getCarById
+      parameters:
+        - name: carId
+          in: path
+          description: ID of car to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedCar'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CreatedCar'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Car not found
+    patch:
+      tags:
+        - car
+      summary: Update an existing car
+      description: Update an existing car by Id
+      operationId: updateCar
+      parameters:
+        - name: carId
+          in: path
+          description: ID of car to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Update an existent car in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Car'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Car'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Car'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedCar'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/CreatedCar'
+        '400':
+          description: Invalid ID supplied
+    delete:
+      tags:
+        - car
+      summary: Deletes a car
+      description: delete a car
+      operationId: deleteCar
+      parameters:
+        - name: api_key
+          in: header
+          description: ''
+          required: false
+          schema:
+            type: string
+        - name: carId
+          in: path
+          description: Car id to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: deleted
+        '400':
+          description: Invalid car value
+components:
+  schemas:
+    CarArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/CreatedCar'
+    Car:
+      type: object
+      properties:
+        placa:
+          type: string
+          example: ABC1234
+        chassi:
+          type: string
+          example: 1HGCM82633A123456
+        renavam:
+          type: string
+          example: 12345678901
+        modelo:
+          type: string
+          example: Sedan
+        marca:
+          type: string
+          example: Honda
+        ano:
+          type: string
+          example: '2022'
+    CreatedCar:
+      type: object
+      properties:
+        carId:
+          type: string
+          example: c42aa223-45b2-4697-bbea-40135bed9ea8
+        placa:
+          type: string
+          example: ABC1234
+        chassi:
+          type: string
+          example: 1HGCM82633A123456
+        renavam:
+          type: string
+          example: 12345678901
+        modelo:
+          type: string
+          example: Sedan
+        marca:
+          type: string
+          example: Honda
+        ano:
+          type: string
+          example: '2022'
